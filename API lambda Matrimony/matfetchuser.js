@@ -20,8 +20,7 @@ exports.handler = (event, context, callback) =>{
             throw error;
         }
         else {
-            // // connected!
-            // console.log(result);
+            
             callback(error, result);
             connection.end(function (error) { callback(error, result);});
               
