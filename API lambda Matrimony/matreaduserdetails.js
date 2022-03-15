@@ -1,0 +1,28 @@
+// Created by Jeny Biju.
+
+var mysql = require('mysql');
+
+var connection = mysql.createConnection({
+    host: "database-1.cq6avrntdh5x.ap-south-1.rds.amazonaws.com",
+    user: "admin",
+    password: "jenysdatabase",
+    database: "matrimony"
+}); 
+
+// to edit profile.
+exports.handler = (event, context, callback) =>{
+    var data = JSON.parse(event.body);
+    var id = data.id;
+        
+    connection.query("select u.txtUsername, g.Gender, m.Mothertongue, u.dtDOB, r.Religion, u.txtPhoneno from Users u join Gender g on u.refGender=g.id join Mothertongue m on u.refMothertongue=m.id join Religion r on u.refReligion=r.id where u.txtUsername=? and u.txtPhoneno=?;",[id], function (error, result, fields){
+        if (error){
+            connection.destroy();
+            throw error;
+        }
+        else {
+            callback(error, result);
+            connection.end(function (error) { callback(error, result);});
+              
+        }});
+    
+ };
